@@ -10,15 +10,21 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
-
+    files = os.listdir(app.config['UPLOAD_PATH'])
+    # cleanup files before the first GET request
+    for file in files:
+        os.remove(os.path.join(app.config['UPLOAD_PATH'], file))
+    files = os.listdir(app.config['UPLOAD_PATH'])
+    return render_template('index.html', files=files)
+    
 
 @app.route('/', methods=['POST'])
 def upload_files():
     uploaded_file = request.files['audiofile']
     filename = secure_filename(uploaded_file.filename)
     uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-    return render_template('index.html')
+    files = os.listdir(app.config['UPLOAD_PATH'])
+    return render_template('index.html', files=files)
 
 
 @app.route('/uploads/<filename>')
