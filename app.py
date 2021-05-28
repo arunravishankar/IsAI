@@ -9,6 +9,7 @@ from bokeh.embed import components
 from bokeh.resources import INLINE
 from bokeh.palettes import YlOrRd
 from bokeh.models.annotations import Title
+from json2html import *
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
@@ -69,12 +70,43 @@ def upload_files(result_table='temp'):
             scripts[file] = script
             divs[file] = div
 
+            if result_table == 'temp':
+                related_links = ["https://www.sangeethamshare.org/tvg/UPLOADS-1001---1200/1172-T.N.Seshagopalan_7-Navarathnamalika-4-Podhigai_TV/",
+                                "https://www.sangeethamshare.org/tvg/UPLOADS-6201---6400/6301-Bharathi_Ramasubban/",
+                                "https://www.sangeethamshare.org/tvg/UPLOADS-1801---2000/1914-KS_Narayanaswami-Veena-FM_Amritavarshini/",
+                                "https://www.sangeethamshare.org/tvg/UPLOADS-3201---3400/3351-MS_Sheela-Veenai_Kuppiyer_Compositions/",
+                                "https://www.sangeethamshare.org/tvg/UPLOADS-3601---3800/3800-S_Saketharaman/"]
+                related_table = {
+                    "Related Links": [
+                        {"Kriti (Song)": 'sarOja daLa nEtri himagiri', "Ragam": 'shankarAbharaNam',
+                        "Composer": 'Syama Sastri', "Artist": 'TN Seshagopalan', "Link": related_links[0]},
+                        {"Kriti (Song)": 'dakSinNAmUrtE', "Ragam": 'shankarAbharaNam',
+                        "Composer": 'Muthuswamy Dikshitar', "Artist": 'Bharathi Ramasubban', "Link": related_links[1]},
+                        {"Kriti (Song)": 'manasu svAdhInamaina', "Ragam": 'shankarAbharaNam',
+                        "Composer": 'Tyagaraja', "Artist": 'KS Narayanaswami', "Link": related_links[2]},
+                        {"Kriti (Song)": 'bAgu mIraganu', "Ragam": 'shankarAbharaNam',
+                        "Composer": 'Veenai Kuppiyer', "Artist": 'MS Sheela	', "Link": related_links[3]},
+                        {"Kriti (Song)": 'yArenreNNAmalE', "Ragam": 'shankarAbharaNam',
+                        "Composer": 'Arunachala Kavi', "Artist": 'S Saketharaman', "Link": related_links[4]}
+                    ]
+                }
+
+                tables[file] = json2html.convert(
+                    json=related_table,
+                    table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
+                )
+            else:
+                tables[file] = json2html.convert(
+                    json={},
+                    table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
+                )
 
         html = render_template('index.html',
                                files=files, js_resources=js_resources,
                                css_resources=css_resources,
                                scripts=scripts,
-                               divs=divs)
+                               divs=divs,
+                               tables=tables)
         return html
     return '', 204
 
