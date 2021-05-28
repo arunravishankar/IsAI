@@ -32,10 +32,17 @@
         <h3>Replay uploaded audio file</h3>
         <hr>
         {% for file in files %}
-          <audio controls src="{{ url_for('upload', filename=file)}}">Your browser does not support the audio
+        <audio controls src="{{ url_for('upload', filename=file)}}">Your browser does not support the audio
           element</audio>
         {% endfor %}
         </hr>
+      </div>
+      <div>
+        <h3>Chromagrams</h3>
+        {% for file in files %}
+        {{ js_resources|indent(4)|safe }} {{ css_resources|indent(4)|safe }}
+        {{ scripts[file]|indent(4)|safe }} {{ divs[file]|indent(4)|safe }}
+        {% endfor %}
       </div>
     </div>
   </div>
