@@ -1,16 +1,14 @@
-bokeh >= 2.3.0
-ffmpeg-python >= 0.2.0
-Flask >= 1.1.2
-future >= 0.18.2
-ipython >= 7.23.0
-Keras >= 2.4.3
-librosa >= 0.8.0
-matplotlib >= 3.3.4
-requests >= 2.25.1
-beautifulsoup4 >= 4.9.3
-pandas >= 1.2.3
-numpy >= 1.20.2
-requests_futures >= 1.0.0
-selenium >= 3.141.0
-tensorflow >= 2.5.0
-scikit-learn >= 0.24.1
+bokeh
+ffmpeg-python
+Flask
+future
+ipython
+librosa
+matplotlib
+requests
+beautifulsoup4
+pandas
+numpy
+requests_futures
+selenium
+scikit-learn
