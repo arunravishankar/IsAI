@@ -1,37 +1,49 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Ragam identification for Carnatic Music">
-    <!-- <link rel="icon" href="favicon.ico"> -->
 
-    <title>IsAI</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Ragam identification for Carnatic Music">
+  <!-- <link rel="icon" href="favicon.ico"> -->
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <h2>IsAI</h2>
-          <form enctype="multipart/form-data" action="" method="POST">
-            <div class="col-lg-10 text-center form-group">
-              <label for="fileUpload">Upload audio file (less than 5MB)</label>
-              <input type="file" name="audiofile" class="form-control" id="fileUpload" aria-describedby="fileUpload">
-            </div>
-            <div class="col-lg-2 text-center">
-                <input type="submit" value="Upload" class="btn btn-primary">
-            </div>
-          </form>
-        </div>
+  <title>IsAI</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2>IsAI</h2>
+        <form enctype="multipart/form-data" action="" method="POST">
+          <div class="col-lg-10 text-center form-group">
+            <label for="fileUpload">Upload audio file (less than 5MB)</label>
+            <input type="file" name="audiofile" class="form-control" id="fileUpload" aria-describedby="fileUpload">
+          </div>
+          <div class="col-lg-2 text-center">
+            <input type="submit" value="Upload" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
+      <div>
+        <h3>Replay uploaded audio file</h3>
+        <hr>
+        {% for file in files %}
+          <audio controls src="{{ url_for('upload', filename=file)}}">Your browser does not support the audio
+          element</audio>
+        {% endfor %}
+        </hr>
       </div>
     </div>
-    <!-- Bootstrap core JavaScript
+  </div>
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </body>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
 </html>
