@@ -137,7 +137,7 @@ class urlScraper():
         """
         return self
 
-    def df_uploaders_album_ids(df):
+    def df_uploaders_album_ids(self, df):
         """
         Parses the Uploaders and Album IDs from the Concert IDs
         args: df - dataframe containing Concert ID, Track, Kriti, Ragam,
@@ -148,7 +148,7 @@ class urlScraper():
         df['Album ID'] = df['Concert ID'].str.split('-').str[1].str.strip().str.lower()
         return df
 
-    def get_album_href_(response):
+    def get_album_href_(self, response):
         """
         Gets the album urls for a file 
         by using the Concert ID and 
@@ -201,7 +201,7 @@ class urlScraper():
             marker=marker+lim
         return all_album_urls    
 
-    def high_ragam_counts_sample(df, min_rag, samp):
+    def high_ragam_counts_sample(self, df, min_rag, samp):
         """
         Picking ragams that have at least min_rag number of 
         files in the database. This will remove rare ragams from
@@ -225,7 +225,7 @@ class urlScraper():
         sample_df.to_csv('over{}ragams{}sample.csv'.format(min_rag,samp))
         return sample_df
 
-    def get_url_download_(response, track_table):
+    def get_url_download_(self, response, track_table):
         """
         Parses html page to obtain the download url for the right track
         Contains error handling to handle pages that don't contain
@@ -294,7 +294,7 @@ class urlScraper():
 
         return all_download_urls
 
-    def append_download_urls_save_df(df, download_urls, filename):
+    def append_download_urls_save_df(self, df, download_urls, filename):
         """
         Appends a column to the df to include the download urls
         for each file
