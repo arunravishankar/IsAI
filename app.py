@@ -14,6 +14,7 @@ import pickle
 import numpy as np
 import sklearn
 import warnings
+import pandas as pd
 
 warnings.filterwarnings("ignore")
 
@@ -70,7 +71,7 @@ def index():
 
 
 @app.route('/', methods=['POST'])
-def upload_files(result_table='temp'):
+def upload_files():
     uploaded_file = request.files['audiofile']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
@@ -104,8 +105,17 @@ def upload_files(result_table='temp'):
             pred_ragam = max(pred, key=pred.count)
             print(pred_ragam)
 
-
-            if result_table == 'temp':
+            df = pd.read_csv(os.path.join('data_utils', 'sample_min_rag_100_samp_100_50_df.csv'))
+            df = df[df['Ragam']==pred_ragam]
+            columns = ['Kriti', 'Ragam', 'Composer', 'Main Artist', 'Download URLs']
+            df = df[columns]
+            df = df.drop_duplicates('Kriti')
+            
+            try:
+                related_table = {"Related Links": list(df.T.to_dict().values())[:5]}
+                
+            except:
+                result_table = 'temp'
                 related_links = ["https://www.sangeethamshare.org/tvg/UPLOADS-1001---1200/1172-T.N.Seshagopalan_7-Navarathnamalika-4-Podhigai_TV/",
                                 "https://www.sangeethamshare.org/tvg/UPLOADS-6201---6400/6301-Bharathi_Ramasubban/",
                                 "https://www.sangeethamshare.org/tvg/UPLOADS-1801---2000/1914-KS_Narayanaswami-Veena-FM_Amritavarshini/",
@@ -125,18 +135,11 @@ def upload_files(result_table='temp'):
                         "Composer": 'Arunachala Kavi', "Artist": 'S Saketharaman', "Link": related_links[4]}
                     ]
                 }
-
-                tables[file] = json2html.convert(
-                    json=related_table,
+            
+            tables[file] = json2html.convert(json=related_table,
                     table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
-                )
-            else:
-                # Figure out how to convert df to this format
-                tables[file] = json2html.convert(
-                    json={},
-                    table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
-                )
-
+            )
+           
         html = render_template('index.html',
                                files=files, js_resources=js_resources,
                                css_resources=css_resources,
