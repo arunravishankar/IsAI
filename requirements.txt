@@ -12,3 +12,7 @@ numpy
 requests_futures
 selenium
 scikit-learn
+gunicorn
+pickle
+werkzeug
+json2html
