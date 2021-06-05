@@ -2,7 +2,6 @@ from flask import Flask, app, render_template, request, redirect, url_for, abort
 import os
 from werkzeug.utils import secure_filename
 import librosa
-import matplotlib.pyplot as plt
 import librosa.display
 from bokeh.plotting import figure
 from bokeh.embed import components
@@ -153,3 +152,7 @@ def upload_files():
 @app.route('/uploads/<filename>')
 def upload(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
+if __name__ == '__main__':
+    app.run(port=33507)
