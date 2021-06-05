@@ -15,4 +15,3 @@ scikit-learn
 gunicorn
 werkzeug
 json2html
-sndfile
