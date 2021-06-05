@@ -10,11 +10,31 @@ from bokeh.resources import INLINE
 from bokeh.palettes import YlOrRd
 from bokeh.models.annotations import Title
 from json2html import *
+import pickle
+import numpy as np
+import sklearn
+import warnings
+
+warnings.filterwarnings("ignore")
+
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.wav', '.mp3']
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
+
+def extract_feature(file_name, i):
+    X, sample_rate = librosa.load(file_name, offset = 20*i, duration = 10)
+    stft = np.abs(librosa.stft(X))
+    mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=40).T,axis=0)
+    chroma = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T,axis=0)
+    mel = np.mean(librosa.feature.melspectrogram(X, sr=sample_rate).T,axis=0)
+    contrast = np.mean(librosa.feature.spectral_contrast(S=stft,
+    	sr=sample_rate).T,axis=0)
+    tonnetz = np.mean(librosa.feature.tonnetz(y=librosa.effects.harmonic(X),
+    	sr=sample_rate).T,axis=0)
+    return mfccs,chroma,mel,contrast,tonnetz
 
 
 def get_chromagram(file, offset=5, duration=5, hop_length=10, n_chroma=200):
@@ -69,6 +89,21 @@ def upload_files(result_table='temp'):
             chromagrams[file] = curr_chromagram
             scripts[file] = script
             divs[file] = div
+            # Run through the model to obtain ragam
+            modelfile = os.path.join('ml', 'ridge_model')
+            loaded_model = pickle.load(open(modelfile, 'rb'))
+            features_test = np.empty((0,193))
+            for i in range(10):
+                try:
+                    mfccs, chroma, mel, contrast, tonnetz = extract_feature(os.path.join(app.config['UPLOAD_PATH'], file),i)
+                    ext_features = np.hstack([mfccs, chroma, mel, contrast, tonnetz])
+                    features_test = np.vstack([features_test, ext_features])
+                except:
+                    pass
+            pred = list(loaded_model.predict(features_test))
+            pred_ragam = max(pred, key=pred.count)
+            print(pred_ragam)
+
 
             if result_table == 'temp':
                 related_links = ["https://www.sangeethamshare.org/tvg/UPLOADS-1001---1200/1172-T.N.Seshagopalan_7-Navarathnamalika-4-Podhigai_TV/",
@@ -96,6 +131,7 @@ def upload_files(result_table='temp'):
                     table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
                 )
             else:
+                # Figure out how to convert df to this format
                 tables[file] = json2html.convert(
                     json={},
                     table_attributes="id=\"link-table\" class=\"table table-bordered table-hover\""
