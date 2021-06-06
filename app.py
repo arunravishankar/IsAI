@@ -21,7 +21,7 @@ warnings.filterwarnings("ignore")
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
 app.config['UPLOAD_EXTENSIONS'] = ['.wav', '.mp3']
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 
 def extract_feature(file_name, i):
