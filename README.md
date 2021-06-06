@@ -43,6 +43,9 @@ The feature engineering process is done from the file ml/get_features.py
 ### Machine Learning 
 The 193 features obtained in the above feature engineering process are then fed into a couple of classification algorithms - the Random Forest Classifier and the Ridge Classifier. 
 A subset of the audio files from the database were downloaded to disk - 50 files from 130 distinct Ragams totalling upto 6500 files. This made sure that there were no imbalanced classes.
+
+The number 130 was obtained from the following plot. One can see that a very large proportion of the songs in the database are from the top 130 ragams. 
+![](clips_per_ragam.jpg)
 In order to train the ML model, the files were split into test and train with a test_size of 20 percent. 
 
 With the training data, the features were extracted and then run into a Random Forest classifier and a Ridge classifier. 
