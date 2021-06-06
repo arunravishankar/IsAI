@@ -62,7 +62,7 @@ def plot_chromagram(chromagram, plot_width=800, plot_height=200, reverse_palette
 @app.route('/', methods=['GET'])
 def index():
     if not os.path.exists(app.config['UPLOAD_PATH']):
-        os.makedirs('my_folder')
+        os.makedirs(app.config['UPLOAD_PATH'])
     files = os.listdir(app.config['UPLOAD_PATH'])
     # cleanup files before the first GET request
     for file in files:
