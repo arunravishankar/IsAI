@@ -20,8 +20,8 @@ warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
-#app.config['UPLOAD_EXTENSIONS'] = ['.wav', '.mp3']
-app.config['UPLOAD_EXTENSIONS'] = ['.wav']
+app.config['UPLOAD_EXTENSIONS'] = ['.wav', '.mp3']
+#app.config['UPLOAD_EXTENSIONS'] = ['.wav']
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 
 
